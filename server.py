@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from pprint import pprint
@@ -13,6 +13,8 @@ from sklearn.feature_extraction.text import TfidfTransformer
 import re
 
 app = Flask(__name__, template_folder='templates')
+app.secret_key = '1d7e11875835300d5bdd0df069189c8e'
+
 
 model = pickle.load(open('model.pkl', 'rb'))
 vectorizer = pickle.load(open("vectorizer.pkl", 'rb'))
@@ -39,6 +41,10 @@ def predict():
         2: 'Simple Future'}
 
     sentence = request.form['Your_Sentence']
+    if sentence.strip() == '':
+        flash('Please enter a sentence.', 'error')
+
+        return render_template('index.html')
     pprint(sentence)
     sentence = sentence.lower()  # Convert to lowercase
     sentence = re.sub(r'\W', ' ', sentence)  # Remove non-alphanumeric characters
