@@ -12,19 +12,19 @@ from sklearn.feature_extraction.text import TfidfTransformer
 
 import re
 
-app = Flask(__name__, template_folder='templates')
-app.secret_key = '1d7e11875835300d5bdd0df069189c8e'
+application = Flask(__name__, template_folder='templates')
+application.secret_key = '1d7e11875835300d5bdd0df069189c8e'
 
 
 model = pickle.load(open('model.pkl', 'rb'))
 vectorizer = pickle.load(open("vectorizer.pkl", 'rb'))
 
-@app.route('/')
+@application.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/predict', methods=['POST', 'GET'])
+@application.route('/predict', methods=['POST', 'GET'])
 def predict():
     tenseMapping = {
         11: 'Simple Present',
@@ -65,5 +65,5 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    application.debug = True
+    application.run()
